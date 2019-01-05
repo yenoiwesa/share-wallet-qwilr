@@ -16,21 +16,21 @@ app.use(serveStatic('./build'));
 
 // error handling
 app.use(async (ctx, next) => {
-    try {
-        await next();
-    } catch (err) {
-        ctx.status = err.status || 500;
-        ctx.body = err.message;
-        ctx.app.emit('error', err, ctx);
-    }
+  try {
+    await next();
+  } catch (err) {
+    ctx.status = err.status || 500;
+    ctx.body = { error: err.message };
+    ctx.app.emit('error', err, ctx);
+  }
 });
 
 app.on('error', (err, ctx) => {
-    if (err instanceof APIError) {
-        console.log(`API Error: ${err.status} - ${err.message}`);
-    } else {
-        console.error(err);
-    }
+  if (err instanceof APIError) {
+    console.log(`API Error: ${err.status} - ${err.message}`);
+  } else {
+    console.error(err);
+  }
 });
 
 // middleware

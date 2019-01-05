@@ -1,58 +1,58 @@
 const APIError = require('../apiError');
 
 class Balance {
-    constructor() {
-        this.amount = 0;
+  constructor() {
+    this.amount = 0;
+  }
+
+  add(value) {
+    this.amount += value;
+  }
+
+  withdraw(value) {
+    if (value > this.amount) {
+      throw new APIError('Funds insufficient', 401);
     }
+    this.amount -= value;
+  }
 
-    add(value) {
-        this.amount += value;
-    }
+  encode() {
+    return {
+      amount: this.amount
+    };
+  }
 
-    withdraw(value) {
-        if (value > this.amount) {
-            throw new APIError('Funds insufficient', 401);
-        }
-        this.amount -= value;
-    }
+  installRoutes(router) {
+    router.get('/api/balance', cxt => {
+      cxt.body = this.encode();
+    });
 
-    encode() {
-        return {
-            amount: this.amount
-        };
-    }
+    router.put('/api/balance/add', cxt => {
+      // retrieve amount added
+      const value = Number(cxt.request.body.value);
 
-    installRoutes(router) {
-        router.get('/api/balance', cxt => {
-            cxt.body = this.encode();
-        });
+      if (isNaN(value)) {
+        throw new APIError('Value must be a number', 400);
+      }
 
-        router.put('/api/balance/add', cxt => {
-            // retrieve amount added
-            const value = Number(cxt.request.body.value);
+      this.add(value);
 
-            if (isNaN(value)) {
-                throw new APIError('Value must be a number', 400);
-            }
+      cxt.body = this.encode();
+    });
 
-            this.add(value);
+    router.put('/api/balance/withdraw', cxt => {
+      // retrieve amount withdrawn
+      const value = Number(cxt.request.body.value);
 
-            cxt.body = this.encode();
-        });
+      if (isNaN(value)) {
+        throw new APIError('Value must be a number', 400);
+      }
 
-        router.put('/api/balance/withdraw', cxt => {
-            // retrieve amount withdrawn
-            const value = Number(cxt.request.body.value);
+      this.withdraw(value);
 
-            if (isNaN(value)) {
-                throw new APIError('Value must be a number', 400);
-            }
-
-            this.withdraw(value);
-
-            cxt.body = this.encode();
-        });
-    }
+      cxt.body = this.encode();
+    });
+  }
 }
 
 module.exports = new Balance();
