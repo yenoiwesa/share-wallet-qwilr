@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import logo from './logo.svg';
 import Balance from './components/Balance';
+import Wallet from './components/Wallet';
 import './App.css';
 
 class App extends Component {
@@ -14,6 +15,7 @@ class App extends Component {
         </header>
         <main className="App-main">
           <Balance />
+          <Wallet />
         </main>
       </div>
     );

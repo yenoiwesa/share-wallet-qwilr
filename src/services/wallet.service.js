@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs';
 
-class Balance extends Subject {
+class Wallet extends Subject {
   constructor() {
     super();
     this.initPromise = null;
@@ -14,30 +14,19 @@ class Balance extends Subject {
     return this.initPromise;
   }
 
-  async add(value) {
-    const response = await fetch('/api/balance/add', {
+  async buy(ticker, quantity) {
+    const response = await fetch('/api/share/buy', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ value })
-    });
-    return this.handleResponse(response);
-  }
-
-  async withdraw(value) {
-    const response = await fetch('/api/balance/withdraw', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ value })
+      body: JSON.stringify({ ticker, quantity })
     });
     return this.handleResponse(response);
   }
 
   async refresh() {
-    const response = await fetch('/api/balance');
+    const response = await fetch('/api/wallet');
     return this.handleResponse(response);
   }
 
@@ -51,9 +40,9 @@ class Balance extends Subject {
     } catch (error) {
       throw error || 'An unknown error has occured';
     }
-    this.next(data.amount);
+    this.next(data);
   }
 }
 
-const singleton = new Balance();
+const singleton = new Wallet();
 export default singleton;

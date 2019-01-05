@@ -57,7 +57,11 @@ class WithdrawFundsAction extends Component {
   render() {
     let error;
     if (this.state.error) {
-      error = <div className="u-error">{this.state.error}</div>;
+      error = (
+        <div role="alert" className="u-error">
+          {this.state.error}
+        </div>
+      );
     }
 
     return (

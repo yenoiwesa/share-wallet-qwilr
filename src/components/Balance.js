@@ -28,7 +28,8 @@ class Balance extends Component {
     return (
       <div className="Balance">
         <div className="Balance-details">
-          <div className="Balance-title">Current balance</div>
+          <h2 className="Balance-title">Account</h2>
+          <div className="Balance-subtitle">Current balance</div>
           <div className="Balance-value">$ {formatCurrency(this.state.amount)}</div>
         </div>
 
