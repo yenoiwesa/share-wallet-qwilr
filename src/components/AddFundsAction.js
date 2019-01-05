@@ -82,7 +82,9 @@ class AddFundsAction extends Component {
             <TextField autoFocus label="Amount to transfer" onChange={this.handleChange} type="number" margin="dense" fullWidth required />
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose}>Cancel</Button>
+            <Button className="u-cancel" onClick={this.handleClose}>
+              Cancel
+            </Button>
             <Button onClick={this.handleSubmit} color="primary">
               Add funds
             </Button>

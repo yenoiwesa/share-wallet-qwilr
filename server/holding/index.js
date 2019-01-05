@@ -10,7 +10,7 @@ class Holding {
 
   async buy(qty) {
     const price = await share.getRealTimePrice(this.ticker);
-    balance.withdraw(qty * price); 
+    balance.withdraw(qty * price);
     this.quantity += qty;
   }
 
@@ -29,12 +29,12 @@ class Holding {
       ticker: this.ticker,
       quantity: this.quantity,
       shareValue: price,
-      holdingValue: this.quantity * price
+      total: this.quantity * price
     };
   }
-  
+
   isEmpty() {
-      return !this.quantity;
+    return !this.quantity;
   }
 }
 

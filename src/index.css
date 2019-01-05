@@ -20,3 +20,7 @@ code {
   border-radius: 4px;
   margin-bottom: 16px;
 }
+
+button.u-cancel {
+  margin-right: auto;
+}

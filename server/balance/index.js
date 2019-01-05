@@ -1,6 +1,5 @@
 const APIError = require('../apiError');
-
-const precision = 2;
+const helper = require('../helper');
 
 class Balance {
   constructor() {
@@ -8,14 +7,14 @@ class Balance {
   }
 
   add(value) {
-    this.amount = Number((this.amount + value).toFixed(precision));
+    this.amount = helper.roundCurrency(this.amount + value);
   }
 
   withdraw(value) {
     if (value > this.amount) {
       throw new APIError('Funds insufficient', 401);
     }
-    this.amount = Number((this.amount - value).toFixed(precision));
+    this.amount = helper.roundCurrency(this.amount - value);
   }
 
   encode() {
@@ -25,14 +24,9 @@ class Balance {
   }
 
   validate(value) {
-    if (isNaN(value)) {
-      throw new APIError('Value must be a number', 400);
-    }
-    if (value < 0) {
+    const amount = helper.roundCurrency(value);
+    if (amount < 0) {
       throw new APIError('Value must be positive', 400);
-    }
-    if (value.toFixed(precision + 1) != value.toFixed(precision) + '0') {
-      throw new APIError('Precision is not supported', 400);
     }
   }
 

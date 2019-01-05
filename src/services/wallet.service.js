@@ -1,5 +1,7 @@
 import { Subject } from 'rxjs';
 
+import BalanceService from './balance.service';
+
 class Wallet extends Subject {
   constructor() {
     super();
@@ -22,6 +24,19 @@ class Wallet extends Subject {
       },
       body: JSON.stringify({ ticker, quantity })
     });
+    BalanceService.refresh();
+    return this.handleResponse(response);
+  }
+
+  async sell(ticker, quantity) {
+    const response = await fetch('/api/share/sell', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ ticker, quantity })
+    });
+    BalanceService.refresh();
     return this.handleResponse(response);
   }
 

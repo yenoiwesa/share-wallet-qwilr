@@ -1,5 +1,4 @@
-const APIError = require('../apiError');
-const balance = require('../balance');
+const helper = require('../helper');
 
 class Wallet {
   constructor() {
@@ -7,12 +6,12 @@ class Wallet {
   }
 
   async encode() {
-    const holdings = await Promise.all(Array.from(this.holdings.values()).map(holding => holding.encode())); 
-    
+    const holdings = await Promise.all(Array.from(this.holdings.values()).map(holding => holding.encode()));
+    const total = holdings.reduce((total, holding) => helper.roundCurrency(holding.total + total), 0);
     return {
-      globalBalance: balance.amount,
       count: this.holdings.size,
-      holdings: holdings
+      holdings: holdings,
+      total: total
     };
   }
 

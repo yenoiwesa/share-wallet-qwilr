@@ -10,7 +10,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import WalletService from '../services/wallet.service';
 
-class BuyShareAction extends Component {
+class SellShareAction extends Component {
   constructor(props) {
     super(props);
 
@@ -47,12 +47,12 @@ class BuyShareAction extends Component {
 
   async handleSubmit() {
     if (!this.state.ticker) {
-      this.setState({ error: 'You must enter the ticker of the share to buy.' });
+      this.setState({ error: 'You must enter the ticker of the share to sell.' });
       return;
     }
 
     if (!this.state.quantity) {
-      this.setState({ error: 'You must enter the quantity of shares to buy.' });
+      this.setState({ error: 'You must enter the quantity of shares to sell.' });
       return;
     }
 
@@ -60,7 +60,7 @@ class BuyShareAction extends Component {
 
     try {
       this.setState({ processing: true });
-      await WalletService.buy(this.state.ticker, this.state.quantity);
+      await WalletService.sell(this.state.ticker, this.state.quantity);
     } catch (error) {
       this.setState({ error });
       return;
@@ -85,22 +85,18 @@ class BuyShareAction extends Component {
       processing = <CircularProgress size={20} />;
     }
 
-    // shorter label if the button is used within a holding component
-    // i.e. ticker is available
-    const label = this.props.ticker ? 'Buy' : 'Buy shares';
-
     return (
       <div className="BuyShareAction">
         <Button variant="outlined" color="secondary" onClick={this.handleClickOpen}>
-          {label}
+          Sell
         </Button>
 
         <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Buy shares</DialogTitle>
+          <DialogTitle id="form-dialog-title">Sell shares</DialogTitle>
           <DialogContent>
             {error}
 
-            <DialogContentText>Enter the ticker and the quantity of the share you wish to buy.</DialogContentText>
+            <DialogContentText>Enter the ticker and the quantity of the share you wish to sell.</DialogContentText>
 
             <TextField
               autoFocus
@@ -128,7 +124,7 @@ class BuyShareAction extends Component {
             </Button>
             {processing}
             <Button onClick={this.handleSubmit} color="primary" disabled={this.state.processing}>
-              Buy share
+              Sell share
             </Button>
           </DialogActions>
         </Dialog>
@@ -137,4 +133,4 @@ class BuyShareAction extends Component {
   }
 }
 
-export default BuyShareAction;
+export default SellShareAction;
