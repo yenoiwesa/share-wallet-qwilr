@@ -20,6 +20,6 @@ export function formatCurrency(amount, decimalCount = 2, decimal = '.', thousand
         : '')
     );
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 }

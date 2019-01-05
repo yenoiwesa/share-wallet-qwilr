@@ -6,11 +6,12 @@ module.exports.install = router => {
   router.put('/api/share/buy', async cxt => {
     // retrieve quantity added
     const quantity = Number(cxt.request.body.quantity);
-    if (isNaN(quantity)) {
-      throw new APIError('Quantity must be a number', 400);
+    if (isNaN(quantity) || quantity <= 0) {
+      throw new APIError('Quantity must be a positive number.', 400);
     }
-    const ticker = cxt.request.body.ticker;
     // TODO: validation of ticker
+    const ticker = cxt.request.body.ticker.toUpperCase();
+
     let holding = wallet.holdings.get(ticker) || new Holding(ticker);
     await holding.buy(quantity);
     console.log('new holding: ', holding);
@@ -22,14 +23,15 @@ module.exports.install = router => {
   router.put('/api/share/sell', async cxt => {
     // retrieve quantity added
     const quantity = Number(cxt.request.body.quantity);
-    if (isNaN(quantity)) {
-      throw new APIError('Quantity must be a number', 400);
+    if (isNaN(quantity) || quantity <= 0) {
+      throw new APIError('Quantity must be a positive number.', 400);
     }
-    const ticker = cxt.request.body.ticker;
     // TODO: validation of ticker
+    const ticker = cxt.request.body.ticker.toUpperCase();
+
     let holding = wallet.holdings.get(ticker);
     if (!holding) {
-      throw new APIError('Holding not found in the wallet', 400);
+      throw new APIError('Holding not found in the wallet.', 400);
     }
     await holding.sell(quantity);
     console.log('new holding: ', holding);

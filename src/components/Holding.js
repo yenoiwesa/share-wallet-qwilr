@@ -10,6 +10,10 @@ class Holding extends Component {
     return (
       <div className="Holding">
         <div className="Holding-section">
+          <div className="Holding-label">Company</div>
+          <div className="Holding-value">{this.props.holding.company}</div>
+        </div>
+        <div className="Holding-section">
           <div className="Holding-label">Ticker</div>
           <div className="Holding-value">{this.props.holding.ticker}</div>
         </div>

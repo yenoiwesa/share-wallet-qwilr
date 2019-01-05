@@ -40,6 +40,26 @@ class Wallet extends Subject {
     return this.handleResponse(response);
   }
 
+  async getShare(ticker) {
+    if (this.shareController) {
+      this.shareController.abort();
+    }
+
+    if (!ticker || ticker.length <= 2) {
+      return;
+    }
+
+    this.shareController = new AbortController();
+
+    try {
+      const response = await fetch(`/api/share/${ticker}`, { signal: this.shareController.signal });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return;
+    }
+  }
+
   async refresh() {
     const response = await fetch('/api/wallet');
     return this.handleResponse(response);

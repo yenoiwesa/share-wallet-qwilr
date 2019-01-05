@@ -9,6 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import WalletService from '../services/wallet.service';
+import { formatCurrency } from '../formatters';
 
 class BuyShareAction extends Component {
   constructor(props) {
@@ -19,7 +20,8 @@ class BuyShareAction extends Component {
       ticker: props.ticker || '',
       quantity: 1,
       error: null,
-      processing: false
+      processing: false,
+      share: null
     };
 
     this.handleClickOpen = this.handleClickOpen.bind(this);
@@ -33,8 +35,12 @@ class BuyShareAction extends Component {
     this.setState({ open: true });
   }
 
-  handleTickerChange(event) {
-    this.setState({ ticker: event.target.value });
+  async handleTickerChange(event) {
+    const ticker = event.target.value;
+    this.setState({ ticker: ticker });
+
+    const share = await WalletService.getShare(ticker);
+    this.setState({ share });
   }
 
   handleQuantityChange(event) {
@@ -42,7 +48,7 @@ class BuyShareAction extends Component {
   }
 
   handleClose() {
-    this.setState({ open: false, ticker: this.props.ticker || '', quantity: 1, error: null, processing: false });
+    this.setState({ open: false, ticker: this.props.ticker || '', quantity: 1, error: null, processing: false, share: null });
   }
 
   async handleSubmit() {
@@ -85,6 +91,20 @@ class BuyShareAction extends Component {
       processing = <CircularProgress size={20} />;
     }
 
+    let estimate;
+    if (this.state.share) {
+      const quantity = this.state.quantity || 1;
+      estimate = (
+        <div>
+          <p>{this.state.share.companyName}</p>
+          <p>
+            Price estimate: $ {formatCurrency(this.state.share.latestPrice)} x {quantity} = ${' '}
+            {formatCurrency(this.state.share.latestPrice * quantity)}
+          </p>
+        </div>
+      );
+    }
+
     // shorter label if the button is used within a holding component
     // i.e. ticker is available
     const label = this.props.ticker ? 'Buy' : 'Buy shares';
@@ -121,6 +141,8 @@ class BuyShareAction extends Component {
               fullWidth
               required
             />
+
+            {estimate}
           </DialogContent>
           <DialogActions>
             <Button className="u-cancel" onClick={this.handleClose}>

@@ -2,24 +2,28 @@ const APIError = require('../apiError');
 const { IEXClient } = require('iex-api');
 require('isomorphic-fetch');
 
-const iex = new IEXClient(fetch)
+const iex = new IEXClient(fetch);
 
 class Share {
-  constructor() {
-  }
-
   async getRealTimePrice(ticker) {
     const result = await iex.stockPrice(ticker);
-    console.log(ticker, result);
     if (isNaN(result)) {
       throw new APIError(result, 400);
     }
     return result;
-  };
+  }
 
   async getQuote(ticker) {
-    const result = iex.stockQuote(ticker);
+    const result = await iex.stockQuote(ticker);
     return result;
+  }
+
+  async getCompanyName(ticker) {
+    const result = await iex.stockCompany(ticker);
+    if (!result.companyName) {
+      throw new APIError(result, 400);
+    }
+    return result.companyName;
   }
 
   async encode(ticker) {

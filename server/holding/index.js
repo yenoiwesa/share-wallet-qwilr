@@ -16,17 +16,19 @@ class Holding {
 
   async sell(qty) {
     if (qty > this.quantity) {
-      throw new APIError('Not enough share', 401);
+      throw new APIError('Not enough shares.', 401);
     }
     const price = await share.getRealTimePrice(this.ticker);
     this.quantity -= qty;
-    balance.add(qty * price); // TODO: price round up (here or in balance)
+    balance.add(qty * price);
   }
 
   async encode() {
+    this.company = this.company || (await share.getCompanyName(this.ticker));
     const price = await share.getRealTimePrice(this.ticker);
     return {
       ticker: this.ticker,
+      company: this.company,
       quantity: this.quantity,
       shareValue: price,
       total: this.quantity * price

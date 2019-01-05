@@ -12,7 +12,7 @@ class Balance {
 
   withdraw(value) {
     if (value > this.amount) {
-      throw new APIError('Funds insufficient', 401);
+      throw new APIError('Insufficient funds.', 401);
     }
     this.amount = helper.roundCurrency(this.amount - value);
   }
@@ -26,7 +26,7 @@ class Balance {
   validate(value) {
     const amount = helper.roundCurrency(value);
     if (amount < 0) {
-      throw new APIError('Value must be positive', 400);
+      throw new APIError('Value must be positive.', 400);
     }
   }
 
