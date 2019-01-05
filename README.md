@@ -1,68 +1,74 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# My Share Wallet
 
-## Available Scripts
+Qwilr Vetting Task by Matthieu Di Berardino
 
-In the project directory, you can run:
+## Running the app
 
-### `npm start`
+The project manages dependencies through `npm`. To install them, run the following command in the root of the project:
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```
+npm install
+```
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+Once done, the single-page application must be built with the following command:
 
-### `npm test`
+```
+npm run build
+```
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+And finally, run the server with the following command:
 
-### `npm run build`
+```
+npm run start
+```
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+At this stage, the web app will be available at `https://localhost:8000`.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+## Retrospective on the project
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Methodology
 
-### `npm run eject`
+After having reviewed the list of requirements, I took about 30 minutes to design on paper the different REST services I would need on the server side and a mock up of the single page application's UI.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+I selected **React.JS** for the front-end with the `react-app` scaffolding project because it is fast and simple to set up and running.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+On the backend side, I chose a **node.JS** implementation with REST services, as it seemed to be appropriate considering the need for building code fast and with asynchronous external calls.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+I started by building the account balance REST API on backend side. I used **Koa.js** for the web server framework because it is lightweight, and has plenty of useful middlewares that work with it (router, etc).
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+I continued with the front-end components for the account balance, and selected **Material UI** to help with the UI building blocks of the project.
 
-## Learn More
+I continued by alternating server and front-end implementation for the other functionalities in the same manner.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+To retrieve the up to date stock exchange prices, I found a node library called `iex-api` which does it quite well. It does not require any authentication, and has very high free tier usage quotas. It made it easier to integrate that functionality into the app.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+On the front-end side, to manage the state of the components and their refresh, I chose to use **RxJS** Subjects for the Wallet and Account Balance.
 
-### Code Splitting
+### Time management
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+I started the project at 10am.
 
-### Analyzing the Bundle Size
+I had a lunch break and another break in the afternoon, accounting for a total of 2 hours off the project.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+I finished the project around 9pm on the same day.
 
-### Making a Progressive Web App
+### Shortcuts, simplifying assumptions, known bugs, etc.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+Although I attempted to put as much form and API input validation as I could in the time allocated, there are still numerous areas where it's possible to bypass these.
 
-### Advanced Configuration
+For instance, adding funds on the account will not be working properly once a too big integer size for the account balance is reached.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+In terms of look and feel, the app will not be responsive on mobile phones, as I did not have time to spend on this.
 
-### Deployment
+The app is not ready to be internationalised or localised either, does not have proper accessibility (WCAG), and does not use web workers for access offline or optimised caching.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+Feature wise, to simplify the problem, it is assumed that there is only one account in the entire server, and thus the account balance and share wallet are singletons of the app.
 
-### `npm run build` fails to minify
+On server side, although the services were supposed to be REST, they ended up being more 'REST-look-alike' than actual REST (they are verb oriented).
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+I was slowed down during the project mostly by:
+
+- finding a good API to retrieve stock exchange prices, this took longer than I hoped,
+- React.js itself as I am mainly an Angular developer myself and have a lot less knowledge of React. I have used React in this project because it has less boilerplate than Angular and thus it would be faster to get started (that I thought...).
+
+Overall, I am rather happy with the end result.
