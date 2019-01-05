@@ -66,6 +66,8 @@ Feature wise, to simplify the problem, it is assumed that there is only one acco
 
 On server side, although the services were supposed to be REST, they ended up being more 'REST-look-alike' than actual REST (they are verb oriented).
 
+In addition, I initially wanted to have the share price refresh with web sockets, but did not have time at all for this feature unfortunately.
+
 I was slowed down during the project mostly by:
 
 - finding a good API to retrieve stock exchange prices, this took longer than I hoped,
